@@ -1,5 +1,7 @@
 // Import useState from react 
 import React, { useState } from 'react';
+// Import the env variable from the .env file
+const apiUrlRoot = process.env.REACT_APP_API_URL;
 
 function Login() {
   // Declare state variables for each of the form fields
@@ -19,8 +21,9 @@ function Login() {
     }
     // Check if the data is being captured correctly
     console.log(loginData);
-    // Send the data to the server
-    const apiUrl = 'http://13.217.59.165:4550/login';
+    // send the data to the server using fetch API
+    const apiUrl = apiUrlRoot + '/login';
+    
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -31,15 +34,9 @@ function Login() {
     response.then(res => res.json())
       .then(data => {
         setResponseMessage(data.message)
-        if (data.status === "success") {
-          // Redirect the user to the home page after 5 seconds 
-          // setTimeout(() => {
-          //   window.location.href = "/";
-          // }, 5000);
-        }
       })
       .catch(error => console.log(error));
-  }
+  };
 
 
   return (

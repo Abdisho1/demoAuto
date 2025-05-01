@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+// Import the env variable from the .env file
+const apiUrlRoot = process.env.REACT_APP_API_URL;
 
 function AddEmployee(props) {
 
@@ -19,7 +21,8 @@ function AddEmployee(props) {
             password: password
         };
     
-        const apiUrl = 'http://13.217.59.165:4550/add-employee';
+         // get the API URL from the environment variable
+        const apiUrl = apiUrlRoot + '/add-employee';
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -30,13 +33,20 @@ function AddEmployee(props) {
     
         try {
             const response = await fetch(apiUrl, requestOptions);
-    
+            // Check if the response is ok, If not, throw an error
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-    
+            // Parse the JSON response
             const data = await response.json();
             console.log(data);
+            if (response) {
+                // Clear the form fields after submission
+                setFirstName('');
+                setLastName('');
+                setEmailAddress('');
+                setPassword('');
+            }
         } catch (error) {
             console.error('Error during fetch:', error);
         }
